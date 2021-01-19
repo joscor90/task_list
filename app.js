@@ -33,14 +33,40 @@ function addTask(e) {
     }
     
     e.preventDefault();
-}
+};
 
 // removeTask Function
 function removeTask(e) {
     if (e.target.classList.contains('fa-remove')) {
-        e.target.parentElement.parentElement.remove();
+        if (confirm('Are you sure you want to delete this task?')) {
+            e.target.parentElement.parentElement.remove();
+        }
     }
 };
+
+// clearTasks
+function clearTasks(e) {
+    if (confirm('Are you sure you want to delete all the tasks?')) {
+        while(taskList.firstChild) {
+            taskList.removeChild(taskList.firstChild);
+        }
+    }
+};
+
+
+// filterTasks
+
+function filterTasks(e) {
+    const text = e.target.value.toLowerCase();
+    document.querySelectorAll('.collection-item').forEach(function(task) {
+        const item = task.firstChild.textContent;
+        if (item.toLowerCase().indexOf(text) === -1) {
+            task.style.display = 'none';
+        } else {
+            task.style.display = 'block';
+        }
+    });
+}
 
 // loadEventListener Function
 function loadEventListeners() {
@@ -49,6 +75,12 @@ function loadEventListeners() {
 
     // Remove tasks
     taskList.addEventListener('click', removeTask);
+
+    // Clear tasks
+    clearButton.addEventListener('click', clearTasks)
+
+    // Filter tasks
+    filter.addEventListener('keyup', filterTasks);
 }
 
 // Calling loadEventListeners
