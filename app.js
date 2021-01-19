@@ -35,10 +35,20 @@ function addTask(e) {
     e.preventDefault();
 }
 
+// removeTask Function
+function removeTask(e) {
+    if (e.target.classList.contains('fa-remove')) {
+        e.target.parentElement.parentElement.remove();
+    }
+};
+
 // loadEventListener Function
 function loadEventListeners() {
     //  Adding tasks
     form.addEventListener('submit', addTask);
+
+    // Remove tasks
+    taskList.addEventListener('click', removeTask);
 }
 
 // Calling loadEventListeners
