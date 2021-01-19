@@ -27,13 +27,26 @@ function createLi(text) {
 function addTask(e) {
     if (taskInput.value === "") {
         alert('Please add a task');
-    } else {
-        taskList.appendChild(createLi(taskInput.value));
-        taskInput.value = "";
-    }
+    } 
+
+    taskList.appendChild(createLi(taskInput.value));
+    storeInLocal(taskInput.value);
+    taskInput.value = "";
     
     e.preventDefault();
 };
+
+// storeInLocal Function
+function storeInLocal(task) {
+    let tasks;
+    if (localStorage.getItem(tasks) === null) {
+        tasks = [];
+    }
+    
+    tasks = JSON.parse(localStorage.getItem('tasks'));
+    tasks.push(task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
 
 // removeTask Function
 function removeTask(e) {
@@ -44,7 +57,7 @@ function removeTask(e) {
     }
 };
 
-// clearTasks
+// clearTasks Function
 function clearTasks(e) {
     if (confirm('Are you sure you want to delete all the tasks?')) {
         while(taskList.firstChild) {
@@ -53,8 +66,7 @@ function clearTasks(e) {
     }
 };
 
-
-// filterTasks
+// filterTasks Function
 
 function filterTasks(e) {
     const text = e.target.value.toLowerCase();
