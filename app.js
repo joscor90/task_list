@@ -59,11 +59,24 @@ function displayTasks() {
     });
 };
 
+// removeFromLocal Function
+function removeFromLocal(item) {
+    let tasks = getTasks();
+    tasks.forEach(function(task, index) {
+        if (task === item) {
+            tasks.splice(index, 1);
+        }
+    })
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
 // removeTask Function
 function removeTask(e) {
     if (e.target.classList.contains('fa-remove')) {
         if (confirm('Are you sure you want to delete this task?')) {
-            e.target.parentElement.parentElement.remove();
+            let removeItem = e.target.parentElement.parentElement;
+            removeItem.remove();
+            removeFromLocal(removeItem.textContent);
         }
     }
 };
@@ -74,6 +87,7 @@ function clearTasks(e) {
         while(taskList.firstChild) {
             taskList.removeChild(taskList.firstChild);
         }
+        localStorage.clear();
     }
 };
 
