@@ -5,6 +5,16 @@ const clearButton = document.querySelector('.clear-tasks');
 const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
 
+function getTasks() {
+    let tasks;
+    if (localStorage.getItem('tasks') === null) {
+        tasks = [];
+    } else {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+    return tasks
+};
+
 // createLink Function
 function createLink() {
     const link = document.createElement('a');
@@ -28,26 +38,26 @@ function addTask(e) {
     if (taskInput.value === "") {
         alert('Please add a task');
     } 
-
     taskList.appendChild(createLi(taskInput.value));
     storeInLocal(taskInput.value);
     taskInput.value = "";
-    
     e.preventDefault();
 };
 
 // storeInLocal Function
 function storeInLocal(task) {
-    let tasks;
-    if (localStorage.getItem('tasks') === null) {
-        tasks = [];
-    } else {
-        tasks = JSON.parse(localStorage.getItem('tasks'));
-    }
-
+    let tasks = getTasks();
     tasks.push(task);
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
+
+// displayTasks Function
+function displayTasks() {
+    let tasks = getTasks();
+    tasks.forEach(function(task) {
+        taskList.appendChild(createLi(task));
+    });
+};
 
 // removeTask Function
 function removeTask(e) {
@@ -68,7 +78,6 @@ function clearTasks(e) {
 };
 
 // filterTasks Function
-
 function filterTasks(e) {
     const text = e.target.value.toLowerCase();
     document.querySelectorAll('.collection-item').forEach(function(task) {
@@ -83,6 +92,9 @@ function filterTasks(e) {
 
 // loadEventListener Function
 function loadEventListeners() {
+    // DOM Load 
+    document.addEventListener('DOMContentLoaded', displayTasks);
+
     //  Adding tasks
     form.addEventListener('submit', addTask);
 
